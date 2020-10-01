@@ -1,54 +1,71 @@
 # The Essence of Constraint Programming
 
-This repository aims to hold a set of descriptions, tutorials and examples to get you started by using Essence Prime and Savile Row to model and solve hard combinatorial problems.
-## Modelling and Solving in Constraint Programming
+This repository aims to hold a set of descriptions, tutorials and examples to
+get you started by using Essence Prime and Savile Row to model and solve hard
+combinatorial problems.
 
-- Intro
-    - What this book is about
-    - Structure and content
+I'm originally writing in LaTeX because it's more natural and then its easier to 
+generate a PDF. Although I've introduced the scripts to convert them to md so the
+material can be read online.
 
-- Constraint programming
-    - Background: What is a constraint, variable, assignment  ...
-    - Complexity: The complexity in general of CP
+## Auxiliary Files
 
-- Modelling
-    - Languages : Overview of Essence prime
-    - Defining a Problem : How to define an instance and problem
-    - Viewpoints : What is a viewpoint with some examples
-    - Optimisation problems: max and minimise
-    - Common structures: At least one example with each structure
-        - sequences: How to model them and maybe break symmetries
-        - sets: At least one example for each structure fixed-length/bounded ...
-        - relations 
-        - ...
-    - Global Constraints: How to model using GCC.
-        - AllDifferent
-        - GCC
-        - ...
-    - Symmetry
-        - Constraints Before Search: We have seen that, but expand a bit more
-        - Lex-Leader: of course
-    - Preprocessing:
+* Makefile: To convert tex files to markdown.
+* README.md: This file.
+
+## Material
+
+* BASICS:
+    * [introduction.tex](introduction.tex)
+        * What is CP
+        * Define a model and the act of modelling
+        * Introduce the Essence Prime language and Savile Row
+    * [starting_out.tex](starting_out.tex)
+        * Basic building blocks: what is an instance or a problem
+        * How to define a variable and a constraint
+        * Invoking SR from the command line
+        * optimisation
+* MODELLING: First big part 
+    * viewpoints.tex
+        * definition
+        * channeling constraints
+    * symmetry.tex
+        * Why we care
+        * Lex-Leader
+        * lex squared
+    * globalconstraints.tex
+        * alldifferent and family
+        * gcc
+    * patterns.tex
+        * sequence
+        * set
+        * function
+        * relation
+    * nesting.tex
+        * Sets of sets
+        * Sequences of functions
+* ADVANCED SAVILE ROW
+    * preprocessing.tex
         - Backends and Solvers
         - Reformulation in SR
-
-- High level Modelling
-    - Essence
-    - Types
-        - Symmetry breaking
-    - Reformulation Heuristics
-    - ?
-
-- Solving
-    - Concept of Constraint propagation
-    - sprinkle a bit of AC here and there
-    - Heuristics
-    - Global Constraints
-        - AllDifferent
-        - GCC
-    - maybe local search?
-
-- Applications
-    - Scheduling
-    - Mathematics
+* REAL APPLICATIONS: get some big examples that show many tricks
+    * Scheduling
+    * Mathematics
     - ....
+
+## Other things I would like to talk about at some point
+
+* solving: maybe a second big part of tutorials
+    * Concept of Constraint propagation
+    * sprinkle a bit of AC here and there
+    * Heuristics
+    * Global Constraints
+        * AllDifferent
+        * GCC
+    * maybe local search?
+* A more formal definition and complexity of the various problems?
+* High level Modelling
+    * Essence
+    * Types
+    * Reformulation Heuristics
+
