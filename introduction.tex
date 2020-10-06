@@ -55,13 +55,33 @@ it should suffice.
 \subsection{Modelling}
 
 In our setting, a \emph{model} is a translation from the description of a
-combinatorial problem into a computable formulation. This model is typically
+combinatorial problem into a computable formulation. Models are typically
 expressed in terms of a language that can be understood by an application
-called a \emph{solver}. With a model, the solver will perform some analysis and
-inference, providing answers to the model that can then be interpreted
-in terms of the original description of the problem. 
+called a \emph{solver}. With a model, the solver will then perform analysis, 
+inference and search on top of it. This will end in solutions to the model that
+can then be interpreted in terms of the original description of the problem. 
 
 %So now we have a language provided by the solver, and a problem to be solved.
 %What else do we need? Expressing things is not always easy
 
 \subsection{Essence Prime and Savile Row}
+
+Savile Row is a modelling assistant for Constraint Programming. It provides a
+high-level language for the user to specify their constraint problem, and
+automatically translates that language to the input language of a constraint
+solver. It is a flexible tool, so it is very easy to add new rules and new
+translation pipelines.
+
+Savile Row takes in the Essence Prime constraint modelling language. Essence
+Prime is intended to be a declarative, solver-independent and high-level language. 
+
+Savile Row is named after a street in London with many bespoke tailors. The
+name comes from the idea of ``tailoring'' a constraint model in a variety of
+different ways.
+
+
+Savile Row supports various solvers and solver types.
+CP
+SAT
+SMT
+
