@@ -88,12 +88,12 @@ called a \emph{solver}. With a model, the solver will perform analysis,
 inference and search on it. This process will end in solutions to the model that
 can then be interpreted in terms of the original description of the problem. 
 
-% TODO: Diagram for showing the process
-% english description --> model --> solver --> solution --> back to english 
-
-%                     model                            solve         
-% find sqrt(x=16) plz ----->  find g such that g*g = x ---->  g = 4 
-
+\begin{figure}
+    \centering
+    \input{figures/fig-modelling}
+    \label{fig-modelling}
+    \caption{A high-level view of how a problem is solved}
+\end{figure}
 
 \subsection{Essence Prime and Savile Row}
 
@@ -109,7 +109,6 @@ Prime is intended to be a declarative, solver-independent and high-level languag
 Savile Row is named after a street in London with many bespoke tailors. The
 name comes from the idea of ``tailoring'' a constraint model in a variety of
 different ways.
-
 
 Savile Row supports various solvers and solver types.
 CP
