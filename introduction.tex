@@ -4,12 +4,11 @@ Most probably, during your career as a programmer you have found
 a seemingly simple problem that, when it increased a bit in size, you could not
 get a solution for it in a reasonable amount of time. All the ideas and approaches
 you had for it seemed useless and you wondered why.
-
 And if you still have not, I guarantee that at some point you will.
-% because they are everywhere!
-This text aims to make you a more effective and knowledgeable programmer,
-by providing a new and shiny tool to confront them. But first at all, lets give 
-these problems a name.
+
+This text aims to make you a more effective and knowledgeable programmer, by
+providing you with the knoweledge about how to confront them. But first at all,
+lets give these problems a name.
 
 \subsection{Combinatorial Problems}
 
@@ -25,16 +24,15 @@ solution that satisfies all the constraints. All of this without introducing any
 bug and considering all edge cases.
 
 And as a programmer, you know that the effort in doing all of the above is not
-small. Luckly for us we are not the first ones to confront these problems.
+trivial at all. Luckly for us we are not the first ones to confront these problems.
 
-%\subsection{Imperative vs Declarative}
 \subsection{What is Constraint Programming?}
 
 The majority of programming languages were designed with the imperative
 paradigm in mind. In these languages, statements describe how the program state
 changes.  The work of the programmer is to devise which sequences of statements
 produce the desired result. In other words, an imperative program is trying to
-explain the ``how to'' to a computer.
+explain how to accomplish something to a computer.
 
 \begin{example}
 If we are given a value $x$ and we are asked to find it's square root, we might
@@ -42,22 +40,21 @@ apply the Babylonian method: (i) start with a guess $g$ (ii) improve the
 guess $g$ by averaging $g$ and $x/g$ (iii) keep improving the guess $g$
 until it is good enough.
 %
-The basic idea is that if $g$ is an overestimate to the square root of $x$,
-then $x/g$ will be an underestimate. So, the average of these two numbers will
-provide a better approximation.
+The basic idea of the method here is that if $g$ is an overestimate to the
+square root of $x$, then $x/g$ will be an underestimate. So, the average of
+these two numbers will provide a better approximation.
 \end{example}
 
-In contrast, Constraint Programming (CP) is a declarative paradigm. This means
-that instead of focusing on \emph{how}, the programmer should focus on describing
-\emph{what} the program should accomplish. 
-%In other words, it should describe ``what is true''.
+In a declarative paradigm instead of focusing on \emph{how}, the programmer
+should focus on describing \emph{what} the program should accomplish. 
+In other words, it should describe ``what is true''.
 
 \begin{example}
 In a declarative paradigm, to find the square root of $x$ it is enough to 
 state: $\sqrt{x}$ is the $y$ such that $y^2 = x$ and $y \geq 0$.
 %
 Note that this statement tells you what the square root is without having to
-describe how you should find the square root. 
+describe \emph{how} you should find the square root. 
 \end{example}
 
 The beauty of this paradigm is that it will allow us to translate a problem
@@ -68,13 +65,17 @@ up with an imperative algorithm.
 %a picturesque isle between the seas of artificial intelligence, computer
 %science and operations research.
 
-More generally, constraint Programming states relations between problem
+Our focus here will be Constraint Programming (CP), a paradigm for solving
+combinatorial problems that draws on a wide range of techniques from artificial
+intelligence, computer science and operations research. 
+%
+Constraint Programming tools \emph{declaratively} state relations between problem
 variables in the form of constraints, specifying the properties of the
 solution. These constraints can take many forms, such as logical ($\neg$,$\vee$
 or $\wedge$) or numerical (+, -, $*$) operators for example.
 %
 The set of constraints is then automatically solved by giving a value to each
-variable so that the solution is consistent with the stated constraints.  Do
+variable so that the solution is consistent with the stated constraints. Do
 not worry, we will give more formal and complete definitions in the future, but
 for now this should suffice.
 
@@ -88,12 +89,10 @@ inference and search on it. This process will end in solutions to the model that
 can then be interpreted in terms of the original description of the problem. 
 
 % TODO: Diagram for showing the process
-
+% english description --> model --> solver --> solution --> back to english 
 
 %                     model                            solve         
 % find sqrt(x=16) plz ----->  find g such that g*g = x ---->  g = 4 
-%
-%
 
 
 \subsection{Essence Prime and Savile Row}
