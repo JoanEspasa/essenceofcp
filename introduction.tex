@@ -81,12 +81,14 @@ for now this should suffice.
 
 \subsection{Modelling}
 
-In our setting, a \emph{model} is a translation from the description of a
-combinatorial problem into a computable formulation. Models are typically
-expressed in terms of constraints that can be understood by an application
-called a \emph{solver}. With a model, the solver will perform analysis, 
-inference and search on it. This process will end in solutions to the model that
-can then be interpreted in terms of the original description of the problem. 
+In our setting, a \emph{model} is a translation from a natural language
+description of a combinatorial problem into a computable formulation. Models
+concretise the problem using a certain language that can be understood by an
+application called a \emph{solver}. 
+With a model, the solver will perform
+analysis, inference and search on it. This process will end in solutions to the
+model that can then be interpreted in terms of the original description of the
+problem. Figure~\ref{fig-modelling} illustrates this process.
 
 \begin{figure}
     \centering
@@ -95,23 +97,34 @@ can then be interpreted in terms of the original description of the problem.
     \caption{A high-level view of how a problem is solved}
 \end{figure}
 
-\subsection{Essence Prime and Savile Row}
+The principal task that we will be doing here is modelling: the translation of
+the problem to constraints. The process will basically involve the
+interpretation of the problem at hand and deciding what is the best way to
+express it in a language of our choice.
 
-Savile Row is a modelling assistant for Constraint Programming. It provides a
-high-level language for the user to specify their constraint problem, and
-automatically translates that language to the input language of a constraint
-solver. It is a flexible tool, so it is very easy to add new rules and new
-translation pipelines.
+\subsection{Tools of the Trade}
 
-Savile Row takes in the Essence Prime constraint modelling language. Essence
-Prime is intended to be a declarative, solver-independent and high-level language. 
+Combinatorial problem solvers can be grouped by their solving paradigm. Some
+examples of those could be Constraint solvers, SAT/SMT solvers and MIP solvers.
+Commonly, solvers that share a solving paradigm also share the same input
+language, fostering the comparison and competition amongst them. 
+
+As each group of solvers use their own input language, the language we use will
+determine which solvers we will be able to use.
+The research community has demonstrated many times that no set of solvers is
+always better than the others, as each solving technique excel in different
+ways. Therefore the choice of modelling language will not only be important, but
+also far from trivial.
+
+The tool we will be using from here onwards is \emph{Savile Row}, a modelling
+assistant. Savile Row provides \emph{Essence Prime}, an expressive high-level,
+solver-independent language. The crucial feature of Savile Row is that it can
+automatically translate an Essence Prime model to the input language the solver
+of our choice.
 
 Savile Row is named after a street in London with many bespoke tailors. The
 name comes from the idea of ``tailoring'' a constraint model in a variety of
 different ways.
 
-Savile Row supports various solvers and solver types.
-CP
-SAT
-SMT
-
+% disconnection between the high-level mathematical concepts of modelling from
+% what is available in the language of choice
