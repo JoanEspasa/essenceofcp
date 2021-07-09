@@ -1,0 +1,8 @@
+language ESSENCE' 1.0
+letting weight_limit be 50
+
+given weights : matrix indexed by [int(0..objects)] of int(1..)
+find choosen : matrix indexed by [int(0..objects)] of bool
+
+such that
+    ( sum i : int(0..objects) . choosen[i] * weights[i] ) = weight_limit

@@ -1,16 +1,65 @@
 \section{Starting Out}
 
+As our first example, imagine that you are emigrating to a new country. The
+airline you will be using limits the total weight of your luggage to 50kg.
+To make sure you do not forget anything, you made a list of all the items that
+you will need.  Sadly their total weight surpasses the allowed limit, so you
+will need to decide which elements you leave behind.
 
-A vector of 3 ints will be x x x
-we add constraints x1 > x2 > x3
+In this scenario the smart thing to do is to use all the available weight. So you
+start by making a list of the elements and their weight to figure out what is the
+best combination.
 
-Then the solver will try 1 1 1 = bad
-then 1 1 2 = bad ...
-until 3 2 1 = good!
+\begin{figure}
+\begin{lstlisting}
+language ESSENCE' 1.0
+letting weights=[10, 30, 25, 12, 5, 15, 28]
+\end{lstlisting}
+\caption{List of all weights, in Essence Prime}
+\label{fig-knapsack1param}
+\end{figure}
 
-You can imagine a way of making this much better, right?
+Now that we have recorded the weights of all the elements we want carry with us,
+we can model the problem very easily with Essence Prime.
 
-The beauty of this is that you don't have to.
+\begin{figure}
+\begin{lstlisting}
+language ESSENCE' 1.0
+letting weight_limit be 50
+
+given weights : matrix indexed by [int(0..objects)] of int(1..)
+find choosen : matrix indexed by [int(0..objects)] of bool
+
+such that
+(sum i : int(0..objects) . choosen[i] * weights[i]) = weight_limit
+\end{lstlisting}
+\caption{Model in Essence Prime to decide what to bring with us.}
+\label{fig-knapsack1}
+\end{figure}
+
+maximise the usage of your available weight, so
+you try all the combinations of objects to fill exacty the allowed weight.
+
+how can you model this?
+
+Later, consider its monetary value, we want to maximise the value while respecting the
+limit.
+
+Your partner problem, to show instance/problem differentitation.
+
+%
+%
+%Consider a very simple problem of 
+%A vector of 3 ints will be x x x
+%we add constraints x1 > x2 > x3
+%
+%Then the solver will try 1 1 1 = bad
+%then 1 1 2 = bad ...
+%until 3 2 1 = good!
+%
+%You can imagine a way of making this much better, right?
+%
+%The beauty of this is that you don't have to.
 
 
 \subsection{Basic building blocks}
@@ -23,3 +72,8 @@ Invoking SR from the command line
 
 \subsection{Optimising a Solution}
 optimisation
+
+
+% calcudoku might be a nice twist on the classic sudoku puzzle
+%https://newdoku.com/include/print.php?n=3&lang=en&op=1&nd=1
+
