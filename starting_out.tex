@@ -1,5 +1,3 @@
-\section{Starting Out}
-
 As our first example, imagine that you are emigrating to a new country. The
 airline you will be using limits the total weight of your luggage to 50kg.
 To make sure you do not forget anything, you made a list of all the items that
@@ -37,40 +35,26 @@ such that
 \label{fig-knapsack1}
 \end{figure}
 
-maximise the usage of your available weight, so
-you try all the combinations of objects to fill exacty the allowed weight.
+\begin{itemize}
+\item put line numbers in the figures
+\item explain all the parts of the models
+\item introduce problem/param concept with the example that maybe your partner also 
+wants to bring a limited set of objects
+\item explain intuitively how the solver approaches the solution of the problem
+\item show how to execute SR and get a solution
+\item consider the full knapsack problem by considering the monetary value of each object
+and maximizing the cost of everything we select while respecting the weigth limit
+\end{itemize}
 
-how can you model this?
-
-Later, consider its monetary value, we want to maximise the value while respecting the
-limit.
-
-Your partner problem, to show instance/problem differentitation.
-
-%
-%
-%Consider a very simple problem of 
-%A vector of 3 ints will be x x x
-%we add constraints x1 > x2 > x3
-%
-%Then the solver will try 1 1 1 = bad
-%then 1 1 2 = bad ...
-%until 3 2 1 = good!
-%
-%You can imagine a way of making this much better, right?
-%
-%The beauty of this is that you don't have to.
-
-
-\subsection{Basic building blocks}
+\section{Basic building blocks}
  what is an instance or a problem
 How to define a variable and a constraint
 
-\subsection{Solving a Problem}
+\section{Solving a Problem}
 Pick a toy problem to demonstrate everything
 Invoking SR from the command line
 
-\subsection{Optimising a Solution}
+\section{Optimising a Solution}
 optimisation
 
 
