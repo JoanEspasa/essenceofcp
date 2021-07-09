@@ -1,45 +1,68 @@
-As our first example, imagine that you are emigrating to a new country. The
-airline you will be using limits the total weight of your luggage to 50kg.
-To make sure you do not forget anything, you made a list of all the items that
-you will need.  Sadly their total weight surpasses the allowed limit, so you
-will need to decide which elements you leave behind.
-
-In this scenario the smart thing to do is to use all the available weight. So you
-start by making a list of the elements and their weight to figure out what is the
-best combination.
+As our first example, imagine that you are emigrating to a new country. For
+your journey, the airline will be limiting the total weight of your luggage to
+50kg.  To make sure you do not forget anything, you made a list of all the
+items that you will need. Sadly their total weight surpasses the allowed limit,
+so you will need to decide which elements you leave behind.
 
 \begin{figure}
 \begin{lstlisting}
-language ESSENCE' 1.0
-letting weights=[10, 30, 25, 12, 5, 15, 28]
+language ESSENCE' 1.0 @\label{line-language}@
+letting weights=[10, 30, 25, 12, 5, 15, 28] @\label{line-weights}@
 \end{lstlisting}
-\caption{List of all weights, in Essence Prime}
+    \caption{Our \emph{instance}: The contents of the file \texttt{my\_luggage.param}, listing all weights}
 \label{fig-knapsack1param}
 \end{figure}
 
+In this scenario the smart thing to do is to use all the available weight. So
+you start by making a list of the elements and their weight to figure out what
+is the best combination. Figure~\ref{fig-knapsack1param} shows how we can
+express this list in Essence Prime.
+
+\begin{itemize}
+    \item The first line is expressing the language and version that the
+        information is expressed in. In this case, it is Essence Prime version
+        1.0. 
+    \item The second line lists the weights of our objects. The
+        \texttt{letting} keyword lets us define a new variable named
+        \texttt{weights}, which is a list of integers.  We know it is a list
+        because the values are wrapped in square brackets.
+\end{itemize}
+
 Now that we have recorded the weights of all the elements we want carry with us,
-we can model the problem very easily with Essence Prime.
+we can model the problem very easily with Essence Prime. Figure~\ref{fig-knapsack1}
+shows how this could be done.
 
 \begin{figure}
 \begin{lstlisting}
 language ESSENCE' 1.0
 letting weight_limit be 50
 
-given weights : matrix indexed by [int(0..objects)] of int(1..)
+given weights : matrix indexed by [int(0..objects)] of int(1..) @\label{line-1dmatrix}@
 find choosen : matrix indexed by [int(0..objects)] of bool
 
 such that
 (sum i : int(0..objects) . choosen[i] * weights[i]) = weight_limit
 \end{lstlisting}
-\caption{Model in Essence Prime to decide what to bring with us.}
+    \caption{Our \emph{problem}: The contents of the \texttt{luggage.eprime} file, with a model able to decide what to bring with us.}
 \label{fig-knapsack1}
 \end{figure}
 
 \begin{itemize}
-\item put line numbers in the figures
+    \item In Line~\ref{line-1dmatrix} \dots
+\end{itemize}        
+
+Note that we have made a clear distinction between the two parts of the problem.
+The data for our problem, or the \emph{instance}, is defined in one file named
+\textt{my\_luggage.param}. The constraints will reside in the \emph{problem} file,
+named \textt{luggage.eprime}. The data and constraints could both reside in the
+\texttt{luggage.eprime} file, but by separating them it avoids repetition.
+Imagine that your partner is also emigrating with you, and therefore
+has to take the same kind of decision. It is much cleaner to have just another instance
+instead of copying over all the constraints.
+
+
+\begin{itemize}
 \item explain all the parts of the models
-\item introduce problem/param concept with the example that maybe your partner also 
-wants to bring a limited set of objects
 \item explain intuitively how the solver approaches the solution of the problem
 \item show how to execute SR and get a solution
 \item consider the full knapsack problem by considering the monetary value of each object
