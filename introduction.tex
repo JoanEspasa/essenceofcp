@@ -118,14 +118,21 @@ also far from trivial.
 
 The tool we will be using from here onwards is \emph{Savile Row}, a modelling
 assistant. Savile Row provides \emph{Essence Prime}: an expressive high-level,
-solver-independent language. The crucial feature of Savile Row is that it can
-automatically translate an Essence Prime model to the input language of any
-supported solver. 
+solver-independent language. As shown in Figure~\ref{fig-sr}, the crucial
+feature of Savile Row is that it can automatically translate an Essence Prime
+model to the input language of any supported solver. 
 
 The important takeaway is that we will be able to model once, and try many
 different solving approaches.  In fact, Savile Row is named after a street in
 London with many bespoke tailors. The name comes from the idea of ``tailoring''
 a constraint model in a variety of different ways.
+
+\begin{figure}
+    \centering
+    \input{figures/fig-sr}
+    \label{fig-sr}
+    \caption{Translation process for Savile Row models}
+\end{figure}
 
 % disconnection between the high-level mathematical concepts of modelling from
 % what is available in the language of choice
