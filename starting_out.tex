@@ -1,35 +1,46 @@
-As our first example, imagine that you are emigrating to a new country. For
+As our first fully fledged example, imagine that you are emigrating to a new country. For
 your journey, the airline will be limiting the total weight of your luggage to
 50kg.  To make sure you do not forget anything, you made a list of all the
 items that you will need. Sadly their total weight surpasses the allowed limit,
 so you will need to decide which elements you leave behind.
 
+In this scenario the smart thing to do is to use all the available weight. So
+you start by making a list of the elements and their weight to figure out what
+is the best combination. 
+
+We will express the data for our problem, or the \emph{instance},  in one file
+named \texttt{my\_luggage.param}.  You can see it in
+Figure~\ref{fig-knapsack1param}.  The constraints of the problem will reside in
+the \emph{problem} file (Figure~\ref{fig-knapsack1}), named
+\texttt{luggage.eprime}. 
+%
+Imagine that your friend is also emigrating with you, and therefore has to
+take the same kind of decision. By being able to separate the data in a
+\texttt{friend\_luggage.param} instance file, we will modularise the problem
+and avoid the inherent problems of copy-pasting code around.
+%It would still be a valid problem if the data and constraints both resided in
+%the \texttt{luggage.eprime}. 
+
+%Figure~\ref{fig-knapsack1param} shows how we can
+%express this list in Essence Prime.
 \begin{figure}
 \begin{lstlisting}
 language ESSENCE' 1.0 @\label{line-language}@
 letting weights=[10, 30, 25, 12, 5, 15, 28] @\label{line-weights}@
 \end{lstlisting}
-    \caption{Our \emph{instance}: The contents of the file \texttt{my\_luggage.param}, listing all weights}
+    \caption{Our \emph{instance}: The contents of the file
+    \texttt{my\_luggage.param}, listing all weights}
 \label{fig-knapsack1param}
 \end{figure}
 
-In this scenario the smart thing to do is to use all the available weight. So
-you start by making a list of the elements and their weight to figure out what
-is the best combination. Figure~\ref{fig-knapsack1param} shows how we can
-express this list in Essence Prime.
-
-\begin{itemize}
-    \item The first line is expressing the language and version that the
-        information is expressed in. In this case, it is Essence Prime version
-        1.0. 
-    \item The second line lists the weights of our objects. The
-        \texttt{letting} keyword lets us define a new variable named
-        \texttt{weights}, which is a list of integers.  We know it is a list
-        because the values are wrapped in square brackets.
-\end{itemize}
+The first line is expressing what version of the language we are using.  In
+this case, it is Essence Prime version 1.0.  The second line lists the
+weights of our objects. The \texttt{letting} keyword lets us define a new
+variable named \texttt{weights}, which is a list of integers.  We know it
+is a list because the values are wrapped in square brackets.
 
 Now that we have recorded the weights of all the elements we want carry with us,
-we can model the problem very easily with Essence Prime. Figure~\ref{fig-knapsack1}
+we can model the problem very concisely with Essence Prime. Figure~\ref{fig-knapsack1}
 shows how this could be done.
 
 \begin{figure}
@@ -37,32 +48,62 @@ shows how this could be done.
 language ESSENCE' 1.0
 letting weight_limit be 50
 
-given weights : matrix indexed by [int(0..objects)] of int(1..) @\label{line-1dmatrix}@
-find choosen : matrix indexed by [int(0..objects)] of bool
+given weights : matrix indexed by [int(0..objects)] of int(1..) @\label{line-given1dmatrix}@
+find choosen : matrix indexed by [int(0..objects)] of bool @\label{line-find1dmatrix}@
 
 such that
-(sum i : int(0..objects) . choosen[i] * weights[i]) = weight_limit
+(sum i : int(0..objects) . choosen[i] * weights[i]) = weight_limit @\label{line-sumconstraint}@
 \end{lstlisting}
-    \caption{Our \emph{problem}: The contents of the \texttt{luggage.eprime} file, with a model able to decide what to bring with us.}
+    \caption{Our \emph{problem}: The contents of the \texttt{luggage.eprime}
+    file, with a model able to decide what to bring with us.}
 \label{fig-knapsack1}
 \end{figure}
 
+As we saw, the \texttt{letting} keyword is used to define some data in place.
+In addition to it, there are two more important keywords: \texttt{given} and
+\texttt{find}. The \texttt{given} keyword is used to specify that the data is
+coming from an instance file. On the other hand, the \texttt{find} keyword is
+defining new variables. The values for these \texttt{find} variables will need
+to be found by the solver. 
+
+In Figure~\ref{fig-knapsack1} we have one example of each. In
+Line~\ref{line-given1dmatrix} we are `reading' the \texttt{weights} line from
+Figure~\ref{fig-knapsack1param}. Note the used syntax here:
+
+\texttt{given \textbf{name} : matrix indexed by \textbf{dimensions} of \textbf{data type}}
+
+We are saying that it will be given to us a matrix named \texttt{weights} that
+will be indexed using the range \texttt{0..objects} and each element of the
+matrix will be an integer. The possible range of values for these integers goes
+from 1, up to any positive value. The matrix will be one-dimensional, as there
+is only one range of values in the dimensions array.
+
+Note that the name \texttt{objects} is being \emph{implicitly} defined here. The
+\texttt{objects} identifier will be an integer that will take the value of the
+length of the input matrix. Considering Figure~\ref{fig-knapsack1param} as
+input, it will be 6.
+
+Now, Line~\ref{line-find1dmatrix} starts with the \texttt{find} keyword. It
+also defines a one-dimensional matrix, but now made of Boolean variables. As we
+have used the \texttt{find} keyword, the value for each variable will have to
+be found by the solver. 
+The length of the matrix is the same as the weights one, so as you can imagine
+the value of each cell in this matrix will decide if we take each corresponding
+object in our luggage or not. For example, if \texttt{choosen[i] = true}, it
+will mean that we will take the \texttt{i}th object.
+
+Finally, we have to tell the solver the restrictions we are operating under.
+Line~\ref{line-sumconstraint} accomplishes that, restricting that the sum of
+the objects we take is exactly equal as the weight limit.
+The \texttt{sum} operator goes through all the objects via the temporary
+variable \texttt{i}. For each object it adds the multiplication of
+\texttt{choosen[i] * weights[i]} to the sum. The astute reader will see that
+the types here do not match: \texttt{choosen[i]} is a Boolean, while
+\texttt{weights[i]} is an integer. In this situation, Savile Row will be
+intelligent enough to automatically cast the Booleans to a 0/1.
+
+
 \begin{itemize}
-    \item In Line~\ref{line-1dmatrix} \dots
-\end{itemize}        
-
-Note that we have made a clear distinction between the two parts of the problem.
-The data for our problem, or the \emph{instance}, is defined in one file named
-\textt{my\_luggage.param}. The constraints will reside in the \emph{problem} file,
-named \textt{luggage.eprime}. The data and constraints could both reside in the
-\texttt{luggage.eprime} file, but by separating them it avoids repetition.
-Imagine that your partner is also emigrating with you, and therefore
-has to take the same kind of decision. It is much cleaner to have just another instance
-instead of copying over all the constraints.
-
-
-\begin{itemize}
-\item explain all the parts of the models
 \item explain intuitively how the solver approaches the solution of the problem
 \item show how to execute SR and get a solution
 \item consider the full knapsack problem by considering the monetary value of each object
