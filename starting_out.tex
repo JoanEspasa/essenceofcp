@@ -8,7 +8,7 @@ by definition already have a finite domain, as they will be either true or false
 For integer variables, we will need to specifically define their domain.
 
 The syntax for giving a name to a domain is simple:
-$$\text{\texttt{letting \textbf{name} be domain \textbf{range}}}$$
+$$\texttt{letting \textbf{name} be domain \textbf{range}}$$
 
 Where \texttt{\textbf{name}} is the identifier and \texttt{\textbf{range}}
 defines the possible integers. Possible ranges could be \texttt{int(0..9)},
@@ -19,7 +19,7 @@ variable would be declared as \texttt{find y: bool}.
 
 Variables can also be grouped into matrices, which can be indexed by any domain.
 The syntax to declare a matrix is:
-$$\text{\texttt{letting \textbf{name} : matrix indexed by \textbf{dimensions} of \textbf{data type}}}$$
+$$\texttt{letting \textbf{name} : matrix indexed by \textbf{dimensions} of \textbf{data type}}$$
 where \texttt{\textbf{dimensions}} should be a list of domains in which each
 element will be defining one dimension of the matrix. For example,
 \texttt{[int(0..10),int(5,6), int(6..12)]} would define a 3-dimensional matrix
@@ -31,7 +31,7 @@ have the same possible potential values.
 \begin{figure}
 \begin{lstlisting}
 language ESSENCE' 1.0 @\label{line-language}@
-letting valid\_range be domain int(1..10)
+letting valid_range be domain int(1..10)
 find vector : matrix indexed by [int(1..3)] of valid_values
 such that@\label{line-suchthat}@
 vector[1] < vector[2],
@@ -51,7 +51,7 @@ comma-separated sequence of constraints.
 
 If we write this model down in a file called \texttt{toy.eprime}, we can ask
 Savile Row for a model:
-$$\text{\texttt{\$savilerow -run-solver -solutions-to-stdout toy.eprime}}$$
+$$\texttt{\$savilerow -run-solver -solutions-to-stdout toy.eprime}$$
 If Savile Row is correctly installed, it should say something similar to
 Figure~\ref{fig-output1}. Note that our \texttt{vector} matrix has been filled
 up with values that respect the constraints that we have imposed. Note that
@@ -62,7 +62,7 @@ the model to the specifics of the solver. In this case, minion is a constraints
 solver, the default for Savile Row.
 
 \begin{figure}
-\begin{lstlisting}
+\begin{verbatim}
 Created output file for domain filtering toy.eprime.minion
 Created output file toy.eprime.minion
 language ESSENCE' 1.0  
@@ -74,7 +74,7 @@ letting vector be [1, 2, 3]
 
 ----------
 Created information file toy.eprime.info
-\end{lstlisting}
+\end{verbatim}
     \caption{Savile Row output from Figure~\ref{fig-toyexample}}
     \label{fig-output1}
 \end{figure}
@@ -83,7 +83,7 @@ More specifics of the performance and result will be written to the file with
 the \texttt{.info} extension. If we omit the \texttt{-solutions-to-stdout} flag
 in the command line, the solution will be also written in a file.
 
-\section{Optimally Moving Out: A practical Example}
+\section{Optimally Moving Out}
 
 As our first fully fledged example, imagine that you are emigrating to a new country. For
 your journey, the airline will be limiting the total weight of your luggage to
@@ -150,33 +150,21 @@ such that
 \end{figure}
 In addition to the \texttt{letting} and \texttt{find} keywords, there is one
 more important keyword: \texttt{given}. It is used to specify that the data is
-coming from an instance file.  In Figure~\ref{fig-knapsack1} we have one
-example. In Line~\ref{line-given1dmatrix} we are `reading' the \texttt{weights}
-line from Figure~\ref{fig-knapsack1param}. Note the used syntax here:
-
-\texttt{given \textbf{name} : matrix indexed by \textbf{dimensions} of \textbf{data type}}
-
-We are saying that it will be given to us a matrix named \texttt{weights} that
-will be indexed using the range \texttt{0..objects} and each element of the
-matrix will be an integer. The possible range of values for these integers goes
-from 1, up to any positive value. The matrix will be one-dimensional, as there
-is only one range of values in the dimensions array.
-
-Note that the name \texttt{objects} is being \emph{implicitly} defined here. The
-\texttt{objects} identifier will be an integer that will take the value of the
-length of the input matrix. Considering Figure~\ref{fig-knapsack1param} as
-input, it will be 6.
+coming from an instance file. In Figure~\ref{fig-knapsack1},
+Line~\ref{line-given1dmatrix} is `reading' the one-dimensional \texttt{weights}
+matrix.  Note though that the \texttt{objects} identifier is being
+\emph{implicitly} defined here. It will be an integer that will take the value
+of the length of the input matrix. For example, considering
+Figure~\ref{fig-knapsack1param} as input it will take the value 6.
 
 Now, Line~\ref{line-find1dmatrix} starts with the \texttt{find} keyword. 
-%defining new variables. The values for these \texttt{find} variables will need
-%to be found by the solver. 
 It also defines a one-dimensional matrix, but now made of Boolean variables. As
 we have used the \texttt{find} keyword, remember that the value for each
 variable will have to be found by the solver.  The length of the matrix is the
-same as the \texttt{weights} matrix, so as you can imagine the value of each cell in this
-matrix will decide if we take each corresponding object in our luggage or not.
-For example, if \texttt{choosen[i] = true}, it will mean that we will take the
-\texttt{i}th object.
+same as the \texttt{weights} matrix, so as you can imagine the value of each
+cell in this matrix will decide if we take each corresponding object in our
+luggage or not.  For example, if \texttt{choosen[i] = true}, it will mean that
+we will take the \texttt{i}th object.
 
 Finally, we have to tell the solver the restrictions we are operating under.
 Line~\ref{line-sumconstraint} accomplishes that, restricting that the sum of
