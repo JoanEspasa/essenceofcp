@@ -1,3 +1,90 @@
+Remember that we defined a \emph{combinatorial problem} as finding, among a
+finite set of objects, one that satisfies a set of constraints.  Therefore,
+every variable of our problem will have an assigned a finite set
+of its possible values, also called its \emph{domain}. 
+
+Essence Prime supports two basic variable types: Boolean and integer. Booleans
+by definition already have a finite domain, as they will be either true or false.
+For integer variables, we will need to specifically define their domain.
+
+The syntax for giving a name to a domain is simple:
+$$\text{\texttt{letting \textbf{name} be domain \textbf{range}}}$$
+
+Where \texttt{\textbf{name}} is the identifier and \texttt{\textbf{range}}
+defines the possible integers. Possible ranges could be \texttt{int(0..9)},
+\texttt{int(1,3,5,7,9)} or \texttt{int(1..4,6..9)}.  A variable will be defined
+using the \texttt{find} keyword instead. For example, to declare a variable
+that can go from 0 to 10, you would say \texttt{find x: int(0..10)}. A Boolean
+variable would be declared as \texttt{find y: bool}.
+
+Variables can also be grouped into matrices, which can be indexed by any domain.
+The syntax to declare a matrix is:
+$$\text{\texttt{letting \textbf{name} : matrix indexed by \textbf{dimensions} of \textbf{data type}}}$$
+where \texttt{\textbf{dimensions}} should be a list of domains in which each
+element will be defining one dimension of the matrix. For example,
+\texttt{[int(0..10),int(5,6), int(6..12)]} would define a 3-dimensional matrix
+with a rather strange indexing. Finally, the \texttt{\textbf{data type}} will
+be a domain that restricts what potential values the variables in the matrix
+can take.  This implicitly means that all variables in the matrix will need to
+have the same possible potential values.
+
+\begin{figure}
+\begin{lstlisting}
+language ESSENCE' 1.0 @\label{line-language}@
+letting valid\_range be domain int(1..10)
+find vector : matrix indexed by [int(1..3)] of valid_values
+such that@\label{line-suchthat}@
+vector[1] < vector[2],
+vector[2] < vector[3]
+\end{lstlisting}
+    \caption{A toy problem}
+\label{fig-toyexample}
+\end{figure}
+
+Figure~\ref{fig-toyexample} shows our first model with these concepts in
+action.  The first line is expressing what version of the language we are
+using.  In this case, it is Essence Prime version 1.0. We are trying to find an
+increasing sequence of 3 values, where each one of them can take a value from 1
+to 10. After defining all the variables, domains and constants,
+Line~\ref{line-suchthat} defines that everything that comes later on is a
+comma-separated sequence of constraints. 
+
+If we write this model down in a file called \texttt{toy.eprime}, we can ask
+Savile Row for a model:
+$$\text{\texttt{\$savilerow -run-solver -solutions-to-stdout toy.eprime}}$$
+If Savile Row is correctly installed, it should say something similar to
+Figure~\ref{fig-output1}. Note that our \texttt{vector} matrix has been filled
+up with values that respect the constraints that we have imposed. Note that
+there are two time measurements, \texttt{minion} and \texttt{Savile Row}. The
+former refers to the time taken by the background solver to solve the problem,
+while the latter refers to the translation time needed by Savile Row to adapt
+the model to the specifics of the solver. In this case, minion is a constraints
+solver, the default for Savile Row.
+
+\begin{figure}
+\begin{lstlisting}
+Created output file for domain filtering toy.eprime.minion
+Created output file toy.eprime.minion
+language ESSENCE' 1.0  
+$ Minion SolverNodes: 4 
+$ Minion SolverTotalTime: 0.000304 
+$ Minion SolverTimeOut: 0   
+$ Savile Row TotalTime: 0.054
+letting vector be [1, 2, 3]
+
+----------
+Created information file toy.eprime.info
+\end{lstlisting}
+    \caption{Savile Row output from Figure~\ref{fig-toyexample}}
+    \label{fig-output1}
+\end{figure}
+
+More specifics of the performance and result will be written to the file with
+the \texttt{.info} extension. If we omit the \texttt{-solutions-to-stdout} flag
+in the command line, the solution will be also written in a file.
+
+\section{Optimally Moving Out: A practical Example}
+
 As our first fully fledged example, imagine that you are emigrating to a new country. For
 your journey, the airline will be limiting the total weight of your luggage to
 50kg.  To make sure you do not forget anything, you made a list of all the
@@ -7,25 +94,30 @@ so you will need to decide which elements you leave behind.
 In this scenario the smart thing to do is to use all the available weight. So
 you start by making a list of the elements and their weight to figure out what
 is the best combination. 
+Figure~\ref{fig-knapsack1param} shows how we can express this list in Essence Prime.
 
-We will express the data for our problem, or the \emph{instance},  in one file
-named \texttt{my\_luggage.param}.  You can see it in
-Figure~\ref{fig-knapsack1param}.  The constraints of the problem will reside in
-the \emph{problem} file (Figure~\ref{fig-knapsack1}), named
-\texttt{luggage.eprime}. 
-%
-Imagine that your friend is also emigrating with you, and therefore has to
-take the same kind of decision. By being able to separate the data in a
-\texttt{friend\_luggage.param} instance file, we will modularise the problem
-and avoid the inherent problems of copy-pasting code around.
+% TODO - move explicit names down
+The astute reader will have noticed that the file extension in
+Figure~\ref{fig-knapsack1param} is \texttt{param} instead of \texttt{eprime}.
+We will generally express the data for our problem, or the \emph{instance},  in
+one file with the \texttt{.param} extension.  The constraints of the problem
+will reside in the \emph{problem} file, with the \texttt{.eprime} extension.
+This split between data and constraints is not enforced, but is generally
+useful.  Imagine that your friend is also emigrating with you, and therefore
+has to take the same kind of decision. By being able to separate the data in a
+separate instance file, we will modularise the problem and avoid the inherent
+problems of copy-pasting code around.
 %It would still be a valid problem if the data and constraints both resided in
 %the \texttt{luggage.eprime}. 
+%named \texttt{my\_luggage.param}.  You can see it in
+%Figure~\ref{fig-knapsack1param}. 
+%file (Figure~\ref{fig-knapsack1}), named
+%\texttt{luggage.eprime}. 
+%\texttt{friend\_luggage.param}
 
-%Figure~\ref{fig-knapsack1param} shows how we can
-%express this list in Essence Prime.
 \begin{figure}
 \begin{lstlisting}
-language ESSENCE' 1.0 @\label{line-language}@
+language ESSENCE' 1.0
 letting weights=[10, 30, 25, 12, 5, 15, 28] @\label{line-weights}@
 \end{lstlisting}
     \caption{Our \emph{instance}: The contents of the file
@@ -33,16 +125,14 @@ letting weights=[10, 30, 25, 12, 5, 15, 28] @\label{line-weights}@
 \label{fig-knapsack1param}
 \end{figure}
 
-The first line is expressing what version of the language we are using.  In
-this case, it is Essence Prime version 1.0.  The second line lists the
-weights of our objects. The \texttt{letting} keyword lets us define a new
+The second line of Figure~\ref{fig-knapsack1param} lists the
+weights of our objects. We use the \texttt{letting} keyword to define a new
 variable named \texttt{weights}, which is a list of integers.  We know it
 is a list because the values are wrapped in square brackets.
 
 Now that we have recorded the weights of all the elements we want carry with us,
 we can model the problem very concisely with Essence Prime. Figure~\ref{fig-knapsack1}
 shows how this could be done.
-
 \begin{figure}
 \begin{lstlisting}
 language ESSENCE' 1.0
@@ -58,17 +148,11 @@ such that
     file, with a model able to decide what to bring with us.}
 \label{fig-knapsack1}
 \end{figure}
-
-As we saw, the \texttt{letting} keyword is used to define some data in place.
-In addition to it, there are two more important keywords: \texttt{given} and
-\texttt{find}. The \texttt{given} keyword is used to specify that the data is
-coming from an instance file. On the other hand, the \texttt{find} keyword is
-defining new variables. The values for these \texttt{find} variables will need
-to be found by the solver. 
-
-In Figure~\ref{fig-knapsack1} we have one example of each. In
-Line~\ref{line-given1dmatrix} we are `reading' the \texttt{weights} line from
-Figure~\ref{fig-knapsack1param}. Note the used syntax here:
+In addition to the \texttt{letting} and \texttt{find} keywords, there is one
+more important keyword: \texttt{given}. It is used to specify that the data is
+coming from an instance file.  In Figure~\ref{fig-knapsack1} we have one
+example. In Line~\ref{line-given1dmatrix} we are `reading' the \texttt{weights}
+line from Figure~\ref{fig-knapsack1param}. Note the used syntax here:
 
 \texttt{given \textbf{name} : matrix indexed by \textbf{dimensions} of \textbf{data type}}
 
@@ -83,14 +167,16 @@ Note that the name \texttt{objects} is being \emph{implicitly} defined here. The
 length of the input matrix. Considering Figure~\ref{fig-knapsack1param} as
 input, it will be 6.
 
-Now, Line~\ref{line-find1dmatrix} starts with the \texttt{find} keyword. It
-also defines a one-dimensional matrix, but now made of Boolean variables. As we
-have used the \texttt{find} keyword, the value for each variable will have to
-be found by the solver. 
-The length of the matrix is the same as the weights one, so as you can imagine
-the value of each cell in this matrix will decide if we take each corresponding
-object in our luggage or not. For example, if \texttt{choosen[i] = true}, it
-will mean that we will take the \texttt{i}th object.
+Now, Line~\ref{line-find1dmatrix} starts with the \texttt{find} keyword. 
+%defining new variables. The values for these \texttt{find} variables will need
+%to be found by the solver. 
+It also defines a one-dimensional matrix, but now made of Boolean variables. As
+we have used the \texttt{find} keyword, remember that the value for each
+variable will have to be found by the solver.  The length of the matrix is the
+same as the \texttt{weights} matrix, so as you can imagine the value of each cell in this
+matrix will decide if we take each corresponding object in our luggage or not.
+For example, if \texttt{choosen[i] = true}, it will mean that we will take the
+\texttt{i}th object.
 
 Finally, we have to tell the solver the restrictions we are operating under.
 Line~\ref{line-sumconstraint} accomplishes that, restricting that the sum of
@@ -101,7 +187,6 @@ variable \texttt{i}. For each object it adds the multiplication of
 the types here do not match: \texttt{choosen[i]} is a Boolean, while
 \texttt{weights[i]} is an integer. In this situation, Savile Row will be
 intelligent enough to automatically cast the Booleans to a 0/1.
-
 
 \begin{itemize}
 \item explain intuitively how the solver approaches the solution of the problem
